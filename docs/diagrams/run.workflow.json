@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {"title":"从目标到可验证交付", "subtitle":"实现 → 检查点 → 交叉审查；共识与最终文件树一起确认"},
+  "lanes": [
+    {"id":"prepare","label":"冻结目标与运行环境"},
+    {"id":"iterate","label":"多 Agent 接力 · 按需重复"},
+    {"id":"verify","label":"独立判断与同一版本确认"},
+    {"id":"deliver","label":"交付与恢复材料"}
+  ],
+  "nodes": [
+    {"id":"goal","lane":"prepare","col":0,"type":"frontend","label":"输入目标","sublabel":"范围 / 验证"},
+    {"id":"preflight","lane":"prepare","col":2,"type":"security","label":"健康预检","sublabel":"Git / CLI / 模型"},
+    {"id":"contract","lane":"prepare","col":5,"type":"backend","label":"冻结契约","sublabel":"GoalContract"},
+    {"id":"write","lane":"iterate","col":0,"type":"backend","label":"轮流实现","sublabel":"单 Writer 租约"},
+    {"id":"checkpoint","lane":"iterate","col":2,"type":"database","label":"验证并提交","sublabel":"Git checkpoint"},
+    {"id":"review","lane":"iterate","col":5,"type":"external","label":"交叉审查","sublabel":"读取当前 HEAD"},
+    {"id":"final","lane":"verify","col":0,"type":"security","label":"最终验证","sublabel":"权威命令通过"},
+    {"id":"ballot","lane":"verify","col":2,"type":"external","label":"独立 Ballot","sublabel":"全员确认完成"},
+    {"id":"tree","lane":"verify","col":5,"type":"security","label":"最终 TreeAck","sublabel":"代码 + 审计树"},
+    {"id":"commit","lane":"deliver","col":0,"type":"backend","label":"聚焦提交","sublabel":"合入 / 保留"},
+    {"id":"completed","lane":"deliver","col":2,"type":"frontend","label":"完成核验","sublabel":"completed"},
+    {"id":"blocked","lane":"deliver","col":5,"type":"database","label":"保留现场","sublabel":"失败 / 超时 / 竞态"}
+  ],
+  "edges": [
+    {"from":"goal","to":"preflight","variant":"emphasis"},
+    {"from":"preflight","to":"contract","variant":"emphasis"},
+    {"from":"contract","to":"write","fromSide":"bottom","toSide":"top","route":"drop","variant":"emphasis"},
+    {"from":"write","to":"checkpoint","variant":"emphasis"},
+    {"from":"checkpoint","to":"review","variant":"emphasis"},
+    {"from":"review","to":"write","fromSide":"bottom","toSide":"bottom","route":"bottom-channel","variant":"dashed","role":"return"},
+    {"from":"review","to":"final","fromSide":"bottom","toSide":"top","route":"drop","variant":"emphasis"},
+    {"from":"final","to":"ballot","variant":"emphasis"},
+    {"from":"ballot","to":"tree","variant":"emphasis"},
+    {"from":"tree","to":"commit","fromSide":"bottom","toSide":"top","route":"drop","variant":"emphasis"},
+    {"from":"commit","to":"completed","variant":"emphasis"},
+    {"from":"tree","to":"blocked","fromSide":"bottom","toSide":"top","route":"drop","variant":"security","role":"error"}
+  ],
+  "cards": [
+    {"dot":"cyan","title":"循环条件","items":["审查或完成判断仍有未解决项时继续","受回合、时间、失败与停滞预算约束"]},
+    {"dot":"rose","title":"完成条件","items":["所有已选 Agent 独立确认完整目标","TreeAck 绑定同一个最终文件树"]},
+    {"dot":"amber","title":"异常路径","items":["任一阶段均可能停止，图中仅示意出口","保存状态供排查；满足条件后 resume"]}
+  ]
+}

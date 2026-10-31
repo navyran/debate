@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {"title": "CLI Debate Agent · 系统架构", "subtitle": "独立 Agent 负责判断；确定性 Supervisor 负责流程与交付"},
+  "components": [
+    {"id":"entry","type":"frontend","label":"CLI / 本地 Web UI","sublabel":"目标 · 范围 · 验证命令","pos":[40,260],"size":[180,76]},
+    {"id":"supervisor","type":"backend","label":"Supervisor","sublabel":"LangGraph 确定性编排","tag":"写租约 · 预算 · 完成门禁","pos":[310,260],"size":[210,76]},
+    {"id":"gateway","type":"messagebus","label":"协议与 CLI 适配层","sublabel":"Schema · Session · HEAD 绑定","pos":[610,260],"size":[210,76]},
+    {"id":"agents","type":"external","label":"独立 CLI Agents","sublabel":"至少两个 · 原生 Session","tag":"Codex / Claude / 更多适配器","pos":[910,260],"size":[220,76]},
+    {"id":"goal","type":"security","label":"GoalContract","sublabel":"交付条件与修改边界","pos":[310,70],"size":[210,70]},
+    {"id":"facilitator","type":"cloud","label":"DeepSeek · 可选","sublabel":"下一 Writer / 任务建议","tag":"不决定完成 · 无执行工具","pos":[610,70],"size":[210,70]},
+    {"id":"state","type":"database","label":"运行状态与恢复","sublabel":"SQLite · Journal · 事件","pos":[310,460],"size":[210,76]},
+    {"id":"git","type":"database","label":"共享 Git 工作空间","sublabel":"临时分支 / 可选 worktree","tag":"单 Writer · 检查点 · 验证","pos":[910,460],"size":[220,76]},
+    {"id":"delivery","type":"backend","label":"聚焦提交 + 精简审计","sublabel":"合入目标 / 保留结果分支","pos":[610,640],"size":[210,76]}
+  ],
+  "connections": [
+    {"from":"entry","to":"supervisor","variant":"emphasis"},
+    {"from":"supervisor","to":"gateway","variant":"emphasis"},
+    {"from":"gateway","to":"agents","variant":"emphasis"},
+    {"from":"goal","to":"supervisor","variant":"security","fromSide":"bottom","toSide":"top"},
+    {"from":"facilitator","to":"supervisor","variant":"dashed","fromSide":"left","toSide":"top","via":[[565,105],[565,190],[415,190]]},
+    {"from":"supervisor","to":"state","fromSide":"bottom","toSide":"top"},
+    {"from":"agents","to":"git","fromSide":"bottom","toSide":"top","variant":"emphasis"},
+    {"from":"state","to":"delivery","fromSide":"bottom","toSide":"left","via":[[415,678]],"variant":"dashed"},
+    {"from":"git","to":"delivery","fromSide":"bottom","toSide":"right","via":[[1020,678]],"variant":"emphasis"}
+  ],
+  "cards": [
+    {"dot":"emerald","title":"执行与审查","items":["同一版本代码作为共同证据","写入串行，审查与完成判断独立"]},
+    {"dot":"rose","title":"交付条件","items":["最终验证 + 全员 Ballot + TreeAck","确认同一文件树后才生成交付结果"]},
+    {"dot":"amber","title":"本机信任边界","items":["复用已安装并认证的 CLI","运行数据留在本地，不进入开源包"]}
+  ]
+}

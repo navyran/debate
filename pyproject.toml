@@ -37,7 +37,7 @@ discuss-agent = "debate_agent.cli:entrypoint"
 packages = ["src/debate_agent"]
 
 [tool.hatch.build.targets.sdist]
-include = ["/src", "/schemas", "/tests", "/*.md", "/LICENSE", "/pyproject.toml", "/.gitignore"]
+include = ["/src", "/schemas", "/tests", "/docs", "/*.md", "/LICENSE", "/pyproject.toml", "/.gitignore"]
 exclude = ["/.runtime", "/.venv", "/dist", "/build", "**/__pycache__", "**/*.pyc"]
 
 [tool.hatch.build.targets.wheel.force-include]
