@@ -1,0 +1,40 @@
+{
+  "runId": "<redacted>",
+  "status": "ok",
+  "summary": "completed",
+  "result": {
+    "payloads": [
+      {
+        "text": "{\"status\":\"ok\",\"changed\":[\"openclaw-writer.txt\"]}",
+        "mediaUrl": null
+      }
+    ],
+    "meta": {
+      "agentMeta": {
+        "sessionId": "<redacted>",
+        "provider": "deepseek",
+        "model": "deepseek-v4-pro"
+      },
+      "systemPromptReport": {
+        "sessionId": "<redacted>",
+        "sessionKey": "agent:main:debate:probe:<redacted>",
+        "workspaceDir": "<redacted>",
+        "sandbox": {
+          "mode": "off",
+          "sandboxed": false
+        }
+      },
+      "finalPromptText": "<redacted>",
+      "finalAssistantVisibleText": "{\"status\":\"ok\",\"changed\":[\"openclaw-writer.txt\"]}",
+      "finalAssistantRawText": "<redacted>",
+      "toolSummary": {
+        "calls": 2,
+        "tools": [
+          "read",
+          "write"
+        ],
+        "failures": 0
+      }
+    }
+  }
+}

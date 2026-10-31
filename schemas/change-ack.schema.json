@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeAck",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["agent", "commit_sha", "reviewed_paths", "understood_changes", "risks_or_disputes", "decision"],
+  "properties": {
+    "agent": {"enum": ["codex", "claude", "qoder", "opencode", "openclaw", "hermes", "codebuddy"]},
+    "commit_sha": {"type": "string", "minLength": 1},
+    "reviewed_paths": {"type": "array", "items": {"type": "string"}},
+    "understood_changes": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "risks_or_disputes": {"type": "array", "items": {"type": "string"}},
+    "decision": {"enum": ["accept", "revise", "reject", "blocked"]}
+  }
+}

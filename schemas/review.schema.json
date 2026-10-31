@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agent",
+    "turn_id",
+    "head_sha",
+    "goal_contract_version",
+    "protocol_version",
+    "coverage",
+    "findings",
+    "issue_dispositions",
+    "strongest_counterexample",
+    "counterexample_resolution",
+    "completion_assessment",
+    "decision",
+    "summary"
+  ],
+  "properties": {
+    "agent": {"enum": ["codex", "claude", "qoder", "opencode", "openclaw", "hermes", "codebuddy"]},
+    "turn_id": {"type": "string", "minLength": 1},
+    "head_sha": {"type": "string", "minLength": 1},
+    "goal_contract_version": {"type": "integer", "minimum": 1},
+    "protocol_version": {"const": "review-v1"},
+    "coverage": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimension", "status", "summary", "evidence_refs"],
+        "properties": {
+          "dimension": {"enum": ["goal_scope", "correctness", "integration", "validation"]},
+          "status": {"enum": ["pass", "challenge", "unknown"]},
+          "summary": {"type": "string", "minLength": 1},
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "head_sha", "artifact_ref", "path", "locator"],
+              "properties": {
+                "kind": {"enum": ["git_path", "git_diff", "validation_report", "test_result"]},
+                "head_sha": {"type": "string", "minLength": 1},
+                "artifact_ref": {"type": ["string", "null"]},
+                "path": {"type": ["string", "null"]},
+                "locator": {"type": ["string", "null"]}
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["git_path", "git_diff"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"path": {"type": "string", "minLength": 1}},
+                    "required": ["path"]
+                  }
+                },
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["validation_report", "test_result"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"artifact_ref": {"type": "string", "minLength": 1}},
+                    "required": ["artifact_ref"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["finding_id", "dimension", "claim", "impact", "blocking", "evidence_refs", "proposed_change"],
+        "properties": {
+          "finding_id": {"type": "string", "minLength": 1},
+          "dimension": {"enum": ["goal_scope", "correctness", "integration", "validation"]},
+          "claim": {"type": "string", "minLength": 1},
+          "impact": {"type": "string", "minLength": 1},
+          "blocking": {"type": "boolean"},
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "head_sha", "artifact_ref", "path", "locator"],
+              "properties": {
+                "kind": {"enum": ["git_path", "git_diff", "validation_report", "test_result"]},
+                "head_sha": {"type": "string", "minLength": 1},
+                "artifact_ref": {"type": ["string", "null"]},
+                "path": {"type": ["string", "null"]},
+                "locator": {"type": ["string", "null"]}
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["git_path", "git_diff"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"path": {"type": "string", "minLength": 1}},
+                    "required": ["path"]
+                  }
+                },
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["validation_report", "test_result"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"artifact_ref": {"type": "string", "minLength": 1}},
+                    "required": ["artifact_ref"]
+                  }
+                }
+              ]
+            }
+          },
+          "proposed_change": {"type": ["string", "null"]}
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "properties": {"blocking": {"const": true}},
+              "required": ["blocking"]
+            },
+            "then": {
+              "type": "object",
+              "properties": {"evidence_refs": {"type": "array", "minItems": 1}},
+              "required": ["evidence_refs"]
+            }
+          }
+        ]
+      }
+    },
+    "issue_dispositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issue_id", "status", "rationale", "evidence_refs"],
+        "properties": {
+          "issue_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["open", "resolved", "dismissed"]},
+          "rationale": {"type": "string", "minLength": 1},
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "head_sha", "artifact_ref", "path", "locator"],
+              "properties": {
+                "kind": {"enum": ["git_path", "git_diff", "validation_report", "test_result"]},
+                "head_sha": {"type": "string", "minLength": 1},
+                "artifact_ref": {"type": ["string", "null"]},
+                "path": {"type": ["string", "null"]},
+                "locator": {"type": ["string", "null"]}
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["git_path", "git_diff"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"path": {"type": "string", "minLength": 1}},
+                    "required": ["path"]
+                  }
+                },
+                {
+                  "if": {
+                    "type": "object",
+                    "properties": {"kind": {"enum": ["validation_report", "test_result"]}},
+                    "required": ["kind"]
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {"artifact_ref": {"type": "string", "minLength": 1}},
+                    "required": ["artifact_ref"]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "properties": {"status": {"enum": ["resolved", "dismissed"]}},
+              "required": ["status"]
+            },
+            "then": {
+              "type": "object",
+              "properties": {"evidence_refs": {"type": "array", "minItems": 1}},
+              "required": ["evidence_refs"]
+            }
+          }
+        ]
+      }
+    },
+    "strongest_counterexample": {"type": ["string", "null"]},
+    "counterexample_resolution": {"type": ["string", "null"]},
+    "completion_assessment": {"enum": ["complete", "incomplete"]},
+    "decision": {"enum": ["accept", "revise", "reject", "blocked"]},
+    "summary": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "array",
+          "contains": {
+            "type": "object",
+            "properties": {"dimension": {"const": "goal_scope"}},
+            "required": ["dimension"]
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "array",
+          "contains": {
+            "type": "object",
+            "properties": {"dimension": {"const": "correctness"}},
+            "required": ["dimension"]
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "array",
+          "contains": {
+            "type": "object",
+            "properties": {"dimension": {"const": "integration"}},
+            "required": ["dimension"]
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "array",
+          "contains": {
+            "type": "object",
+            "properties": {"dimension": {"const": "validation"}},
+            "required": ["dimension"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "completion_assessment": {"const": "complete"}
+        },
+        "required": ["completion_assessment"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "coverage": {
+            "type": "array",
+            "allOf": [
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "dimension": {"const": "goal_scope"}
+                      },
+                      "required": ["dimension"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "evidence_refs": {"type": "array", "minItems": 1}
+                      },
+                      "required": ["evidence_refs"]
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "dimension": {"const": "validation"}
+                      },
+                      "required": ["dimension"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "evidence_refs": {"type": "array", "minItems": 1}
+                      },
+                      "required": ["evidence_refs"]
+                    }
+                  ]
+                }
+              },
+              {
+                "not": {
+                  "type": "array",
+                  "contains": {
+                    "type": "object",
+                    "properties": {"status": {"const": "unknown"}},
+                    "required": ["status"]
+                  }
+                }
+              }
+            ]
+          },
+          "findings": {
+            "type": "array",
+            "not": {
+              "type": "array",
+              "contains": {
+                "type": "object",
+                "properties": {"blocking": {"const": true}},
+                "required": ["blocking"]
+              }
+            }
+          },
+          "strongest_counterexample": {"type": "string", "minLength": 1},
+          "counterexample_resolution": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ]
+}

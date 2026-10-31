@@ -1,0 +1,36 @@
+{
+  "agent_combination": ["codex", "claude"],
+  "agent_profiles": {
+    "codex": {
+      "model": "fake-codex-1",
+      "variant": "deterministic",
+      "reasoning": "off"
+    },
+    "claude": {
+      "model": "fake-claude-1",
+      "variant": "deterministic",
+      "reasoning": "off"
+    }
+  },
+  "initial_commit_sha": "a61c1c50c3c9cbd29cdbcc0d7764526a7a2ad5d8",
+  "goal_contract": {
+    "version": 1,
+    "objective": "完成受限范围内的实现，并以机械验证证明验收条件。",
+    "deliverables": ["result.txt"],
+    "acceptance_criteria": ["实现目标行为", "验证当前 HEAD"],
+    "allowed_scope": ["result.txt"]
+  },
+  "validation_commands": [["python", "-m", "pytest", "-q"]],
+  "max_turns": 8,
+  "timeout_seconds": 7200,
+  "facilitator": {
+    "enabled": true,
+    "model": "fake-deepseek-v4-flash",
+    "variant": "deterministic",
+    "reasoning": "off",
+    "timeout_seconds": 120
+  },
+  "random_seed": 20260724,
+  "user_participation": false,
+  "repetitions": 3
+}

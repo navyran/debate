@@ -1,0 +1,12 @@
+{
+  "sessions": [
+    {
+      "key": "agent:main:debate:probe:<completed>",
+      "status": "done"
+    },
+    {
+      "key": "agent:main:debate:probe:<cancelled>",
+      "status": "killed"
+    }
+  ]
+}

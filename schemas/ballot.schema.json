@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ballot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agent",
+    "commit_sha",
+    "goal_contract_version",
+    "completion",
+    "criteria",
+    "rationale",
+    "strongest_counterexample",
+    "counterexample_resolution"
+  ],
+  "properties": {
+    "agent": {"enum": ["codex", "claude", "qoder", "opencode", "openclaw", "hermes", "codebuddy"]},
+    "commit_sha": {"type": "string", "minLength": 1},
+    "goal_contract_version": {"type": "integer", "minimum": 1},
+    "completion": {"enum": ["complete", "incomplete"]},
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion", "satisfied"],
+        "properties": {
+          "criterion": {"type": "string", "minLength": 1},
+          "satisfied": {"type": "boolean"}
+        }
+      }
+    },
+    "rationale": {"type": "string"},
+    "strongest_counterexample": {
+      "anyOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "null"}
+      ]
+    },
+    "counterexample_resolution": {
+      "anyOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "null"}
+      ]
+    }
+  }
+}

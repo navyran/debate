@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TurnResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "agent",
+    "turn_id",
+    "base_commit",
+    "observed_head",
+    "goal_contract_version",
+    "decision",
+    "summary",
+    "accepted_points",
+    "issues",
+    "requested_scope_additions",
+    "requested_validation_additions",
+    "completion_assessment"
+  ],
+  "properties": {
+    "agent": {"enum": ["codex", "claude", "qoder", "opencode", "openclaw", "hermes", "codebuddy"]},
+    "turn_id": {"type": "string", "minLength": 1},
+    "base_commit": {"type": "string", "minLength": 1},
+    "observed_head": {"type": "string", "minLength": 1},
+    "goal_contract_version": {"type": "integer", "minimum": 1},
+    "decision": {"enum": ["accept", "revise", "reject", "blocked"]},
+    "summary": {"type": "string"},
+    "accepted_points": {"type": "array", "items": {"type": "string"}},
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "severity", "claim", "evidence", "proposed_change"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "severity": {"type": "string", "minLength": 1},
+          "claim": {"type": "string", "minLength": 1},
+          "evidence": {"type": "array", "items": {"type": "string"}},
+          "proposed_change": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "requested_scope_additions": {"type": "array", "items": {"type": "string"}},
+    "requested_validation_additions": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {"type": "string", "minLength": 1},
+        "minItems": 1,
+        "description": "必须是已拆分 argv，首项为可执行命令；禁止整段 shell 字符串和自然语言说明"
+      }
+    },
+    "completion_assessment": {"enum": ["complete", "incomplete"]}
+  }
+}

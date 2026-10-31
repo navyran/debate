@@ -1,0 +1,5 @@
+{
+  "return_code": 1,
+  "stdout": "HTTP 401: <authentication rejected>\n",
+  "stderr": "\nsession_id: <redacted>\n"
+}

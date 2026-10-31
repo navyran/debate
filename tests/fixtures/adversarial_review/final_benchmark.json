@@ -1,0 +1,153 @@
+{
+  "paired_agent_combination": [
+    "codex",
+    "claude"
+  ],
+  "agent_profiles": {
+    "codex": {
+      "model": "fake-codex-1",
+      "variant": "deterministic",
+      "reasoning": "off"
+    },
+    "claude": {
+      "model": "fake-claude-1",
+      "variant": "deterministic",
+      "reasoning": "off"
+    }
+  },
+  "base_controls": {
+    "initial_commit_sha": "a61c1c50c3c9cbd29cdbcc0d7764526a7a2ad5d8",
+    "goal_contract": {
+      "version": 1,
+      "objective": "完成固定对抗审查基准",
+      "deliverables": [
+        "result.txt"
+      ],
+      "acceptance_criteria": [
+        "目标行为正确",
+        "验证绑定当前 HEAD"
+      ],
+      "allowed_scope": [
+        "result.txt"
+      ]
+    },
+    "validation_commands": [
+      [
+        "python",
+        "-m",
+        "pytest",
+        "-q"
+      ]
+    ],
+    "max_turns": 8,
+    "timeout_seconds": 7200,
+    "facilitator": {
+      "enabled": true,
+      "model": "fake-deepseek-v4-flash",
+      "variant": "deterministic",
+      "reasoning": "off",
+      "timeout_seconds": 120
+    },
+    "random_seed": 20260724,
+    "repetitions": 3,
+    "user_participation": "none"
+  },
+  "groups": {
+    "current-prompt": {
+      "protocol_version": "legacy-v0",
+      "runs": [
+        {
+          "run_id": "current-prompt-1",
+          "known_blockers_found": 2,
+          "missing_acceptance_found": 0,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 1,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        },
+        {
+          "run_id": "current-prompt-2",
+          "known_blockers_found": 2,
+          "missing_acceptance_found": 0,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 1,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        },
+        {
+          "run_id": "current-prompt-3",
+          "known_blockers_found": 2,
+          "missing_acceptance_found": 0,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 1,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        }
+      ]
+    },
+    "four-lens": {
+      "protocol_version": "legacy-v0",
+      "runs": [
+        {
+          "run_id": "four-lens-1",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        },
+        {
+          "run_id": "four-lens-2",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        },
+        {
+          "run_id": "four-lens-3",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 0,
+          "ballot_overturns": 0
+        }
+      ]
+    },
+    "structured-v1": {
+      "protocol_version": "review-v1",
+      "runs": [
+        {
+          "run_id": "structured-v1-1",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 2,
+          "ballot_overturns": 1
+        },
+        {
+          "run_id": "structured-v1-2",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 2,
+          "ballot_overturns": 1
+        },
+        {
+          "run_id": "structured-v1-3",
+          "known_blockers_found": 5,
+          "missing_acceptance_found": 1,
+          "unsupported_completion_blockers": 0,
+          "style_false_positives": 0,
+          "repeated_findings": 2,
+          "ballot_overturns": 0
+        }
+      ]
+    }
+  }
+}

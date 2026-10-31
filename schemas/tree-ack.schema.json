@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TreeAck",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["agent", "final_tree_sha", "accepted", "rationale"],
+  "properties": {
+    "agent": {"enum": ["codex", "claude", "qoder", "opencode", "openclaw", "hermes", "codebuddy"]},
+    "final_tree_sha": {"type": "string", "minLength": 1},
+    "accepted": {"type": "boolean"},
+    "rationale": {"type": "string"}
+  }
+}

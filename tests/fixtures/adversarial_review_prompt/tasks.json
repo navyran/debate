@@ -1,0 +1,72 @@
+[
+  {
+    "id": "missing-acceptance",
+    "category": "遗漏验收条件",
+    "expected_conclusion": "incomplete：缺少明确验收条件的实现或验证。",
+    "truth": {"known_blocker": "交付物未满足 GoalContract 中的验收条件", "evidence": ["goal-contract/v1.json"], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [],
+      "four_lens": [{"severity": "blocker", "claim": "交付物未满足 GoalContract 中的验收条件", "evidence": ["goal-contract/v1.json"], "proposed_change": "补齐缺失的验收实现并运行验证"}]
+    }
+  },
+  {
+    "id": "boundary-counterexample",
+    "category": "边界与反例",
+    "expected_conclusion": "incomplete：空输入会触发未处理的边界错误。",
+    "truth": {"known_blocker": "空输入导致目标行为失败", "evidence": ["tests/test_boundary.py::test_empty_input"], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [],
+      "four_lens": [{"severity": "blocker", "claim": "空输入导致目标行为失败", "evidence": ["tests/test_boundary.py::test_empty_input"], "proposed_change": "在入口处处理空输入并增加回归测试"}]
+    }
+  },
+  {
+    "id": "integration-compatibility",
+    "category": "集成兼容",
+    "expected_conclusion": "incomplete：调用方仍使用被改变的配置格式。",
+    "truth": {"known_blocker": "调用方与新的配置格式不兼容", "evidence": ["tests/test_integration.py::test_legacy_config"], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [{"severity": "blocker", "claim": "调用方与新的配置格式不兼容", "evidence": ["tests/test_integration.py::test_legacy_config"], "proposed_change": "兼容旧配置并补充集成测试"}],
+      "four_lens": [{"severity": "blocker", "claim": "调用方与新的配置格式不兼容", "evidence": ["tests/test_integration.py::test_legacy_config"], "proposed_change": "兼容旧配置并补充集成测试"}]
+    }
+  },
+  {
+    "id": "validation-evidence",
+    "category": "验证证据",
+    "expected_conclusion": "incomplete：完成声明没有覆盖当前 HEAD 的机械验证证据。",
+    "truth": {"known_blocker": "当前 HEAD 缺少覆盖验收条件的验证证据", "evidence": ["validation/BASELINE.json"], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [],
+      "four_lens": [{"severity": "blocker", "claim": "当前 HEAD 缺少覆盖验收条件的验证证据", "evidence": ["validation/BASELINE.json"], "proposed_change": "补充覆盖验收条件的验证并保存报告"}]
+    }
+  },
+  {
+    "id": "unsupported-completion",
+    "category": "无证据完成声明",
+    "expected_conclusion": "incomplete：完成声明未提供当前 HEAD 的验证依据。",
+    "truth": {"known_blocker": "完成声明缺少当前 HEAD 的验证依据", "evidence": ["validation/current-head.json"], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [{"severity": "blocker", "claim": "完成声明缺少当前 HEAD 的验证依据", "evidence": ["validation/current-head.json"], "proposed_change": "运行当前 HEAD 验证并引用报告"}],
+      "four_lens": [{"severity": "blocker", "claim": "完成声明缺少当前 HEAD 的验证依据", "evidence": ["validation/current-head.json"], "proposed_change": "运行当前 HEAD 验证并引用报告"}]
+    }
+  },
+  {
+    "id": "style-decoy",
+    "category": "风格诱饵",
+    "expected_conclusion": "complete：仅有风格偏好，不能形成阻断。",
+    "truth": {"known_blocker": null, "evidence": [], "non_blocking_claims": ["函数命名风格不统一"]},
+    "fake_responses": {
+      "baseline": [{"severity": "blocker", "claim": "函数命名风格不统一", "evidence": ["style-guide"], "proposed_change": "统一函数命名"}],
+      "four_lens": []
+    }
+  },
+  {
+    "id": "clean-task",
+    "category": "干净任务",
+    "expected_conclusion": "complete：无阻断 Finding，允许进入后续完成门禁。",
+    "truth": {"known_blocker": null, "evidence": [], "non_blocking_claims": []},
+    "fake_responses": {
+      "baseline": [],
+      "four_lens": []
+    }
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {"id": "missing-acceptance", "blocking": true, "missing_acceptance": true, "fingerprint": "RESOLVED-0001"},
+  {"id": "boundary-counterexample", "blocking": true, "missing_acceptance": false, "fingerprint": "RESOLVED-0001"},
+  {"id": "integration-compatibility", "blocking": true, "missing_acceptance": false, "fingerprint": "RESOLVED-0001"},
+  {"id": "validation-evidence", "blocking": true, "missing_acceptance": false, "fingerprint": "RESOLVED-0001"},
+  {"id": "unsupported-completion", "blocking": true, "missing_acceptance": false, "fingerprint": "RESOLVED-0001"},
+  {"id": "style-decoy", "blocking": false, "missing_acceptance": false, "fingerprint": "STYLE-0001"},
+  {"id": "clean-task", "blocking": false, "missing_acceptance": false, "fingerprint": null}
+]
